@@ -6,10 +6,15 @@ import EditarProducto from './components/EditarProducto'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom'
 
 
+// Redux
+import { Provider } from 'react-redux';
+import store from './store';
+
 function App() {
   return (
 
     <Router>
+      <Provider store={store}>
       {/* De esta manera se mantiene el Header en todas las paginas */}
       <Header />
 
@@ -21,6 +26,7 @@ function App() {
           <Route exact path="/productos/editar/:id" element={ <EditarProducto />} />
         </Routes>
       </div>
+      </Provider>
     </Router>
 
   );
