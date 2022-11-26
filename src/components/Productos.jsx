@@ -1,6 +1,20 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
+
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+import {obtenerProductosAction}  from '../actions/productosActions.js';
 
 const Productos = () =>{
+
+    const dispatch = useDispatch();
+    
+    useEffect( () =>{
+
+        // Consultar la API
+        const cargarProductos = () => dispatch( obtenerProductosAction()  );
+        cargarProductos();
+
+    },[])
 
     return (
         <Fragment>

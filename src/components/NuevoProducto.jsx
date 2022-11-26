@@ -1,31 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 //1 Nos sirve para mandar a ejecutar las acciones que tengamos 
 // 2 Es una forma de acceder al state dentro del componente
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // Actions de redux
 import { crearNuevoProductoAction } from '../actions/productosActions.js';
 
 const NuevoProductos = () =>{
+    const navigate = useNavigate();
+
+    //State del componente
+    const [nombre,guardarNombre] = useState('');
+    const [precio,guardarPrecio] = useState(0);
+
+    
+
 
     // Utilizar use dispatch y te crea la funcion
 
     const dispatch = useDispatch();
 
+    // Acceder al state del store
+    const cargando = useSelector( (state) => state.productos.loading  )
+    const error = useSelector(state => state.productos.error);
+
+
                                     //Para usar lo del action 
     //Manda a llamar el action del productoAction
-    const agregarProducto = () => dispatch(crearNuevoProductoAction())
+    const agregarProducto = producto => dispatch(crearNuevoProductoAction(producto))
 
     // cuando el usuario haga submit
     const submitNuevoProducto = e =>{
         e.preventDefault();
         
         // Validar formulario
+        if(nombre.trim() === '' || precio <= 0){
+            return;
+        }
 
         // Si no hay errores
 
         // Crear el nuevo producto
-        agregarProducto();
+        agregarProducto({
+            nombre,
+            precio
+        });
 
+        // Redireccionar
+        navigate('/')
     }
 
     return (
@@ -47,6 +69,8 @@ const NuevoProductos = () =>{
                                     className='form-control'
                                     placeholder='Nombre Producto'
                                     name='nombre'
+                                    value = {nombre}
+                                    onChange = {e=>guardarNombre(e.target.value)}
                                 />
                                  <div className='form-group'>
                                 <label>Precio Producto</label>
@@ -55,6 +79,8 @@ const NuevoProductos = () =>{
                                     className='form-control'
                                     placeholder='Precio Producto'
                                     name='precio'
+                                    value = {precio}
+                                    onChange = {e=>guardarPrecio(Number(e.target.value))}
                                 />
                                 </div>
 
@@ -67,6 +93,9 @@ const NuevoProductos = () =>{
                                 Agregar
                             </button>
                         </form>
+                        {/* El cargando lo traemos del useSelector */}
+                        { cargando ? <p>Cargando. . .</p> : null}
+                        { error ? <p className='alert alert-danger p2 mt-4 text-center'>Hubo un error</p> : null}
                     </div>
                 </div>
             </div>
