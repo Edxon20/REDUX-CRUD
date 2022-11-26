@@ -6,7 +6,10 @@ import {
     COMENZAR_DESCARGA_EXITO,
     COMENZAR_DESCARGA_ERROR,
     DESCARGA_PRODUCTO_EXITO,
-    DESCARGA_PRODUCTO_ERROR
+    DESCARGA_PRODUCTO_ERROR,
+    OBTENER_PRODUCTO_ELIMINAR,
+    PRODUCTO_ELIMINADO_EXITO,
+    PRODUCTO_ELIMINADO_ERROR
 
 } from '../types'
 
@@ -49,6 +52,11 @@ export default function(state = initialState, action) {
                 error: false,
                 productos: [...state.productos, action.payload]
             } 
+        case OBTENER_PRODUCTO_ELIMINAR:
+            return{
+                ...state,
+                productoeliminar : action.payload
+            }
         default:
             return state;
     }
